@@ -1,4 +1,4 @@
-module github.com/gen2brain/beeep
+module github.com/george-lewis/beeep
 
 go 1.14
 
