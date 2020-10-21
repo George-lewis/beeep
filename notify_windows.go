@@ -3,11 +3,8 @@
 package beeep
 
 import (
-	"bufio"
-	"bytes"
 	"errors"
 	"os/exec"
-	"strings"
 	"syscall"
 	"time"
 
@@ -18,6 +15,13 @@ import (
 
 var isWindows10 bool
 var applicationID string
+
+// SetAppID sets the name of your application
+func SetAppID(appID string) {
+	if isWindows10 {
+		applicationID = appID
+	}
+}
 
 func init() {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
@@ -33,9 +37,6 @@ func init() {
 
 	isWindows10 = maj == 10
 
-	if isWindows10 {
-		applicationID = appID()
-	}
 }
 
 // Notify sends desktop notification.
@@ -98,27 +99,4 @@ func toastNotification(title, message, appIcon string) toast.Notification {
 		Message: message,
 		Icon:    appIcon,
 	}
-}
-
-func appID() string {
-	defID := "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe"
-	cmd := exec.Command("powershell", "Get-StartApps")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-	out, err := cmd.Output()
-	if err != nil {
-		return defID
-	}
-
-	scanner := bufio.NewScanner(bytes.NewReader(out))
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if strings.Contains(line, "powershell.exe") {
-			sp := strings.Split(line, " ")
-			if len(sp) > 0 {
-				return sp[len(sp)-1]
-			}
-		}
-	}
-
-	return defID
 }

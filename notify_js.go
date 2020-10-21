@@ -6,6 +6,9 @@ import (
 	"github.com/gopherjs/gopherwasm/js"
 )
 
+// SetAppID sets the name of your application
+func SetAppID(appID string) {}
+
 // Notify sends desktop notification.
 //
 // On Web, in Firefox it just works, in Chrome you must call it from some "user gesture" like `onclick`,

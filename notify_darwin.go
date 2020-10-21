@@ -6,6 +6,9 @@ import (
 	"os/exec"
 )
 
+// SetAppID sets the name of your application
+func SetAppID(appID string) {}
+
 // Notify sends desktop notification.
 //
 // On macOS this executes AppleScript with `osascript` binary.

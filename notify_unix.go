@@ -9,6 +9,9 @@ import (
 	"github.com/godbus/dbus/v5"
 )
 
+// SetAppID sets the name of your application
+func SetAppID(appID string) {}
+
 // Notify sends desktop notification.
 //
 // On Linux it tries to send notification via D-Bus and it will fallback to `notify-send` binary.
